@@ -1,0 +1,4 @@
+---
+user: 'tdo'
+github_repo: 'git@'
+ssh_key: '.ssh/id_rsa'
