@@ -1,0 +1,24 @@
+---
+# tasks file for saltmaster
+
+- name: "Download saltbootstrap install script"
+  get_url:
+    url: https://bootstrap.saltproject.io
+    dest: /tmp/salt-bootstrap.sh
+
+- name: "Install salt master and minion"
+  become: yes
+  command: sh /tmp/salt-bootstrap -MP
+  args:
+    creates: /etc/salt/master
+
+- name: Make sure the salt master is started
+  ansible.builtin.systemd:
+    state: started
+    name: salt-master
+
+# TODO minion stuff
+
+- name: Print some need to knows
+  ansible.builtin.debug:
+    msg: Make sure you create a "salt" host in your dns that resolves to the server used

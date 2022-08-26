@@ -1,6 +1,7 @@
 # Linux_base_scripts
 Ansible script for installing base software
 Build for apt based systems
+Specific roles where made for codium and saltmaster / minion
 
 ## prereq
 Ansible installed
