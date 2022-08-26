@@ -9,4 +9,6 @@ apt install ansible
 
 ## usage
 
-Simply execute: `ansible-playbook main.yml` 
+First download the required roles with: `ansible-galaxy install -r requirements.yml`
+
+Then simply execute: `ansible-playbook main.yml` 

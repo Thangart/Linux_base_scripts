@@ -1,0 +1,74 @@
+---
+- name: "Update the system"
+  apt: upgrade=dist force_apt_get=yes
+
+- name: "Install default packages"
+  apt:
+    name:
+      - vim
+      - git
+      - terminator
+      - tmux
+      - zsh
+      - wget
+      - fonts-powerline
+
+- name: "Download ohmyzsh install script"
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /tmp/ohmyzsh.sh
+
+- name: Changing perm of "/tmp/ohmyzsh.sh", adding "+x"
+  file:
+    dest: /tmp/ohmyzsh.sh
+    mode: a+x
+
+- name: "Install ohmyzsh"
+  become: no
+  command: sh /tmp/ohmyzsh.sh --unattended
+  args:
+    creates: /home/{{ user }}/.oh-my-zsh/LICENSE.txt
+
+- name: "update ohmyzsh theme to agnoster"
+  become: no
+  lineinfile:
+    path: ~/.zshrc
+    regexp: '^ZSH_THEME='
+    line: 'ZSH_THEME="agnoster"'
+
+- name: "Add oh-my-tmux git repo"
+  git:
+    repo: https://github.com/gpakosz/.tmux.git
+    dest: /home/{{ user }}/.tmux
+
+- name: "Create ohmytmux symlink"
+  file:
+    src: "/home/{{ user }}/.tmux/.tmux.conf"
+    dest: "/home/{{ user }}/tmux.conf"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: link
+    
+- name: "Copy tmux.conf.local from ohmytmux conf"
+  copy:
+    src: "/home/{{ user }}/.tmux/.tmux.conf.local"
+    dest: "/home/{{ user }}/.tmux.conf.local"
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    remote_src: true
+
+- name: "start tmux as default"
+  lineinfile:
+    path: /home/{{ user}}/.zshrc
+    regexp: 'if [ -z "$TMUX" ] ; then;  tmux attach -t TMUX || tmux new -s TMUX; fi'
+    line: 'if [ -z "$TMUX" ] ; then;  tmux attach -t TMUX || tmux new -s TMUX; fi'
+    state: present
+    insertafter: EOF
+    create: True
+
+
+- name: change user shell to zsh 
+  become: yes
+  user:
+    name: "{{ user }}"
+    shell: /bin/zsh

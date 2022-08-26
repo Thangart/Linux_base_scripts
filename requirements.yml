@@ -1,0 +1,5 @@
+# Geerlingguy pip
+- src: geerlingguy.pip
+
+# Geerlingguy docker
+- src: geerlingguy.docker

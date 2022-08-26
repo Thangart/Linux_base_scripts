@@ -1,4 +1,5 @@
 ---
-user: 'tdo'
+# vars file for base
+user: 'vagrant'
 github_repo: 'git@'
 ssh_key: '.ssh/id_rsa'

@@ -1,0 +1,30 @@
+---
+# tasks file for codium
+- name: "Add vscodium repo key"
+  apt_key:
+    url: https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
+    state: present
+
+- name: "Add vscodium repo"
+  apt_repository:
+    repo: deb https://download.vscodium.com/debs vscodium main
+    state: present
+
+- name: "Update the system"
+  apt: upgrade=dist force_apt_get=yes
+
+
+- name: "Install codium"
+  apt:
+    name:
+      - codium
+
+- name: "Alias code to codium"
+  become: no
+  lineinfile:
+    path: "/home/{{ user}}/.zshrc"
+    regexp: '^alias code='
+    line: 'alias code="codium"'
+    state: present
+    insertafter: EOF
+    create: True
