@@ -44,7 +44,7 @@
 - name: "Create ohmytmux symlink"
   file:
     src: "/home/{{ user }}/.tmux/.tmux.conf"
-    dest: "/home/{{ user }}/tmux.conf"
+    dest: "/home/{{ user }}/.tmux.conf"
     owner: "{{ user }}"
     group: "{{ user }}"
     state: link
