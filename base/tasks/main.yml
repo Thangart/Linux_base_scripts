@@ -12,6 +12,7 @@
       - zsh
       - wget
       - fonts-powerline
+      - ansible
 
 - name: "Download ohmyzsh install script"
   get_url:
